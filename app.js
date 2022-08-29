@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const { body, validationResult } = require("express-validator");
 const app = express();
 app.use(express.json());
 
@@ -24,13 +25,13 @@ app.get("/api/users/:id", userHandlers.getUserById);
 
 // POST
 
-app.post("/api/movies", movieHandlers.postMovie);
-app.post("/api/users", userHandlers.postUser);
+app.post("/api/users", userHandlers.validateUser, userHandlers.postUser); 
+app.post("/api/movies", movieHandlers.validateMovie, movieHandlers.postMovie);
 
 // UPDATE
 
-app.put("/api/movies/:id", movieHandlers.updateMovie),
-app.put("/api/users/:id", userHandlers.updateUser),
+app.put("/api/movies/:id", movieHandlers.validateMovie, movieHandlers.updateMovie),
+app.put("/api/users/:id", userHandlers.validateUser, userHandlers.updateUser),
 
 // LISTEN
 

@@ -1,4 +1,24 @@
 const database = require("./database");
+const { body, validationResult } = require('express-validator');
+
+// Validator
+
+const validateMovie = [
+  body("title").isLength({ max: 255 }),
+  body("director").isLength({ max: 255 }),
+  body("year").isLength({ max: 255 }),
+  body("color").isLength({ max: 255 }),
+  body("duration").isInt(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.status(422).json({ validationErrors: errors.array() });
+    } else {
+      next();
+    }
+  },
+];
 
 // GET
 
@@ -35,6 +55,7 @@ const getMovieById = (req, res) => {
 // POST 
 
 const postMovie = (req, res) => {
+  
   const { title, director, year, color, duration } = req.body;
 
   database
@@ -79,6 +100,7 @@ const updateMovie = (req, res) => {
 module.exports = {
   getMovies,
   getMovieById,
+  validateMovie,
   postMovie,
   updateMovie
 };
