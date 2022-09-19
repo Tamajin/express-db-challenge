@@ -29,6 +29,7 @@ const getUsers = (req, res) => {
       where.map(({ value }) => value)
     )
     .then(([users]) => {
+      users.map((user) => delete user.hashedPassword)
       res.json(users);
     })
     .catch((err) => {
@@ -44,6 +45,7 @@ const getUserById = (req, res) => {
     .query("select * from users where id = ?", [id])
     .then(([users]) => {
       if (users[0] != null) {
+        delete users[0].hashedPassword;
         res.json(users[0]);
       } else {
         res.status(404).send("Not Found");
