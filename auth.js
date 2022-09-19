@@ -3,7 +3,7 @@ const argon2 = require("argon2");
 const hashPassword = (req, res, next) => {
     const password = req.body.password;
     argon2
-    .hash("password", {
+    .hash(password, {
         type: argon2.argon2d,
         memoryCost: 2 ** 16,
         parallelism: 1,
